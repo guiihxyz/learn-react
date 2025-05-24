@@ -1,29 +1,30 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AddTask from './components/AddTask';
 import Tasks from './components/Tasks';
 import { v4 } from 'uuid';
 
 function App() {
-    const [tasks, setTasks] = useState([
-        {
-            id: 1,
-            title: 'Task 1',
-            description: 'Task 1 description',
-            isCompleted: false,
-        },
-        {
-            id: 2,
-            title: 'Task 2',
-            description: 'Task 2 description',
-            isCompleted: false,
-        },
-        {
-            id: 3,
-            title: 'Task 3',
-            description: 'Task 3 description',
-            isCompleted: true,
-        }
-    ]);
+    const [tasks, setTasks] = useState(JSON.parse(localStorage.getItem('tasks')) || []);
+
+    useEffect(() => {
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    }, [tasks])
+
+    // useEffect(() => {
+    //     async function fetchData() {
+    //         const response = await fetch('https://jsonplaceholder.typicode.com/todos?_limit=10', {
+    //             method: 'GET',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             }
+    //         });
+    //         const data = await response.json();
+
+    //         setTasks(data);
+    //     }
+
+    //     fetchData()
+    // }, [])
 
     function toggleTask(taskId) {
         const newTasks = tasks.map(task => {
